@@ -1,29 +1,34 @@
-chrome.storage.local.clear(function(obj){
-    console.log("cleared");
-});
-
-const setCurrentSection = async () => {
-    let user = await getStorageData(null);
-    console.log(user);
+const setCurrentSection = () => {
     chrome.storage.local.get(null, (obj) => {
-        console.log(obj);
+        user = obj.user
+
+        console.log('user', user);
+        if(!user) {
+            toggleDisplay("userForm", "block");
+            return;
+        }
+    
+        toggleDisplay("userForm", "none");
+    
+        if(user.role === 'leader') {
+            toggleDisplay("leaderSection", "block");
+
+            return;
+        }
+
+        if(user.role === 'member') {
+            toggleDisplay("memberSection", "block");
+
+            if(user.team) {
+                toggleDisplay("memberHomeSection", "block");
+                return;
+            }
+
+            toggleDisplay("memberAssocSection", "block");
+            return;
+        }
     })
 
-    if(!user) {
-        toggleDisplay("userForm", "block");
-        return;
-    }
-
-    toggleDisplay("userForm", "none");
-
-    if(user.role === 'leader') {
-        toggleDisplay("leaderSection", "block");
-    }
-
-    if(user.role === 'member') {
-        toggleDisplay("memberSection", "block");
-        toggleDisplay("memberAssocSection", "block");
-    }
 }
 
 setCurrentSection();
@@ -85,7 +90,7 @@ const assocMember = async () => {
     try {
         let response = await hermes.run();
         await saveObjectInLocalStorage({"user": response.data});
-        await setCurrentSection();
+        setCurrentSection();
     } catch (error) {
         console.log(error);
     }
