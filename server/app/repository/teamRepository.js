@@ -17,12 +17,12 @@ class TeamRepository {
         return await teamModel.findOne({ name: name });
     }
 
-    static async createTeam(team) {
-        return await teamModel.create(team);
+    static async getTeamByLeader(leader) {
+        return await teamModel.find({ leader: leader });
     }
 
-    static async updateTeam(id, team) {
-        return await teamModel.findByIdAndUpdate(id, team);
+    static async createTeam(team) {
+        return await teamModel.create(team);
     }
 
     static async deleteTeam(id) {

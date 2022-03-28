@@ -13,10 +13,31 @@ router.get('/', async(req, res) => {
     }
 });
 
+router.get('/find', async(req, res) => {
+    try {
+        const userData = {
+            email: req.query.email,
+            name: req.query.name,
+            role: req.query.role,
+        };
+
+        const user = await UserRepository.getUserByUserData(userData);
+
+        if (!user) {
+            return res.status(404).send({message: "User not found"});
+        }
+
+        return res.status(200).send({data: user, message: "User retrieved successfully"});
+    } catch (error) {
+        return res.status(500).send({message: error.message});
+    }
+});
+
 router.post('/', async(req, res) => {
     try {
         let userData = {
             name: req.body.name,
+            email: req.body.email,
             role: req.body.role,
         }
         const user = await UserRepository.createUser(userData);
@@ -36,7 +57,7 @@ router.post('/assoc', async(req, res) => {
             team: team._id
         };
         const userUpdated = await UserRepository.updateUser(req.body.userId, userData);
-        res.status(200).send({data: userUpdated, message: "User associated successfully"});
+        res.status(200).send({data: {user: userUpdated, team}, message: "User associated successfully"});
     } catch (error) {
         res.status(500).send({message: error.message});
     }

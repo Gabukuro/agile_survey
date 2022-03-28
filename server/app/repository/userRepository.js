@@ -9,8 +9,8 @@ class UserRepository {
         return await userModel.findById(id);
     }
 
-    static async getUserByName(name) {
-        return await userModel.findOne({ name: name });
+    static async getUserByUserData(user) {
+        return await userModel.findOne(user);
     }
 
     static async createUser(user) {

@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const teamController = require('./app/controller/teamController');
 const userController = require('./app/controller/userController');
+const answerController = require('./app/controller/answerController');
 
 const app = express();
 
@@ -19,8 +20,9 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-app.use('/user', userController);
-app.use('/team', teamController);
+app.use('/api/user', userController);
+app.use('/api/team', teamController);
+app.use('/api/answer', answerController);
 
 app.listen(3000, () => {
     console.log(`Client has been stated at: http://localhost:${3000}`);
