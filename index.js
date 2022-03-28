@@ -24,6 +24,6 @@ app.use('/api/user', userController);
 app.use('/api/team', teamController);
 app.use('/api/answer', answerController);
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`Client has been stated at: http://localhost:${3000}`);
 })
