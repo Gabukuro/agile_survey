@@ -11,7 +11,7 @@ class AnswerRepository {
     }
 
     static async getAnswersByTeamId(teamId) {
-        return await answerModel.find({team: teamId}).distinct('answer').count();
+        return await answerModel.find({team: teamId});
     }
 }
 
